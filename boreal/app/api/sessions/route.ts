@@ -49,18 +49,27 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'User already has an active session' }, { status: 409 })
   }
 
-  // Atomically claim the lowest-numbered available slot
-  const { data: slot, error: slotError } = await supabase
+  // Find lowest-numbered available slot
+  const { data: availableSlot, error: findError } = await supabase
     .from('slots')
-    .update({ status: 'occupied' })
+    .select('id, number')
     .eq('status', 'available')
     .order('number', { ascending: true })
     .limit(1)
-    .select('id, number')
     .maybeSingle()
 
-  if (slotError) return NextResponse.json({ error: slotError.message }, { status: 500 })
-  if (!slot) return NextResponse.json({ error: 'No slots available' }, { status: 409 })
+  if (findError) return NextResponse.json({ error: findError.message }, { status: 500 })
+  if (!availableSlot) return NextResponse.json({ error: 'No slots available' }, { status: 409 })
+
+  // Claim the slot
+  const { error: claimError } = await supabase
+    .from('slots')
+    .update({ status: 'occupied' })
+    .eq('id', availableSlot.id)
+
+  if (claimError) return NextResponse.json({ error: claimError.message }, { status: 500 })
+
+  const slot = availableSlot
 
   // Fetch user name for response
   const { data: profile } = await supabase
