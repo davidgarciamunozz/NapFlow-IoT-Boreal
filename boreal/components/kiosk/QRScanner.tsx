@@ -27,32 +27,34 @@ export function QRScanner({ onScan }: Props) {
         const video = videoRef.current!
         video.srcObject = stream
         await video.play()
+
+        const jsQR = (await import('jsqr')).default
+
+        function tick() {
+          const video = videoRef.current
+          const canvas = canvasRef.current
+          if (!video || !canvas || video.readyState < 2) {
+            rafRef.current = requestAnimationFrame(tick)
+            return
+          }
+          const ctx = canvas.getContext('2d', { willReadFrequently: true })!
+          canvas.width = video.videoWidth
+          canvas.height = video.videoHeight
+          ctx.drawImage(video, 0, 0)
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+          const code = jsQR(imageData.data, imageData.width, imageData.height)
+          if (code?.data) {
+            stream?.getTracks().forEach((t) => t.stop())
+            onScan(code.data)
+            return
+          }
+          rafRef.current = requestAnimationFrame(tick)
+        }
+
         tick()
       } catch {
         setPermissionError(true)
       }
-    }
-
-    async function tick() {
-      const video = videoRef.current
-      const canvas = canvasRef.current
-      if (!video || !canvas || video.readyState < 2) {
-        rafRef.current = requestAnimationFrame(tick)
-        return
-      }
-      const ctx = canvas.getContext('2d', { willReadFrequently: true })!
-      canvas.width = video.videoWidth
-      canvas.height = video.videoHeight
-      ctx.drawImage(video, 0, 0)
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-      const jsQR = (await import('jsqr')).default
-      const code = jsQR(imageData.data, imageData.width, imageData.height)
-      if (code?.data) {
-        stream?.getTracks().forEach((t) => t.stop())
-        onScan(code.data)
-        return
-      }
-      rafRef.current = requestAnimationFrame(tick)
     }
 
     start()

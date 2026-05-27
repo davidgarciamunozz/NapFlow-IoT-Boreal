@@ -30,7 +30,7 @@ export function AssignContent({ isCheckout, slotNumber, name, points }: Props) {
     return () => clearInterval(timer)
   }, [router])
 
-  const firstName = decodeURIComponent(name).split(' ')[0]
+  const firstName = name.split(' ')[0]
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center gap-6">

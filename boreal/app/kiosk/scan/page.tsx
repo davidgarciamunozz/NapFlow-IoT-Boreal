@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { WatermarkBg } from '@/components/kiosk/WatermarkBg'
 import { BorealStars } from '@/components/kiosk/BorealStars'
@@ -11,6 +11,13 @@ export default function KioskScanPage() {
   const router = useRouter()
   const [state, setState] = useState<ScanState>('scanning')
   const [errorMessage, setErrorMessage] = useState('')
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current)
+    }
+  }, [])
 
   const handleScan = useCallback(
     async (token: string) => {
@@ -63,7 +70,7 @@ export default function KioskScanPage() {
       }
 
       setState('error')
-      setTimeout(() => setState('scanning'), 3000)
+      errorTimerRef.current = setTimeout(() => setState('scanning'), 3000)
     },
     [state, router]
   )
