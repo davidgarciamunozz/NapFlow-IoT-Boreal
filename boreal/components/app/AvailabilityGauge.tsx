@@ -19,8 +19,9 @@ export function AvailabilityGauge({ initialAvailable, total, peakHour }: Props) 
         supabase
           .from('slots')
           .select('status')
-          .then(({ data }) => {
-            if (data) setAvailable(data.filter((s) => s.status === 'available').length)
+          .then(({ data, error }) => {
+            if (error || !data) return
+            setAvailable(data.filter((s) => s.status === 'available').length)
           })
       })
       .subscribe()
@@ -50,7 +51,9 @@ export function AvailabilityGauge({ initialAvailable, total, peakHour }: Props) 
 function RadialGauge({ available, total }: { available: number; total: number }) {
   const cx = 130, cy = 140
   const bars = Array.from({ length: total }, (_, i) => {
-    const angle = -225 + (i / (total - 1)) * 270
+    const angle = total <= 1
+      ? -225
+      : -225 + (i / (total - 1)) * 270
     const rad = (angle * Math.PI) / 180
     const innerR = 52, outerR = 88
     return {

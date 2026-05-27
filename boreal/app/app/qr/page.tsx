@@ -3,6 +3,7 @@ import { createServiceClient } from '@/lib/supabase/service'
 import { signToken } from '@/lib/qr'
 import { redirect } from 'next/navigation'
 import { QRDisplay } from '@/components/app/QRDisplay'
+import type { SessionWithSlot } from '@/lib/types'
 
 export default async function QRPage() {
   const supabase = await createClient()
@@ -23,13 +24,14 @@ export default async function QRPage() {
   ])
 
   const token = signToken(user.id)
-  const slotNumber = (activeSession as any)?.slots?.number ?? null
+  const slotNumber = (activeSession as SessionWithSlot | null)?.slots?.number ?? null
 
   return (
     <QRDisplay
       token={token}
-      profileName={profile?.name ?? ''}
+      profileName={profile?.name ?? 'Student'}
       initialSlotNumber={slotNumber}
+      userId={user.id}
     />
   )
 }

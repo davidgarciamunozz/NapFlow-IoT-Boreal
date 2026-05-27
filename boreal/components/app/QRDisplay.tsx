@@ -8,9 +8,10 @@ interface Props {
   token: string
   profileName: string
   initialSlotNumber: number | null
+  userId: string
 }
 
-export function QRDisplay({ token, profileName, initialSlotNumber }: Props) {
+export function QRDisplay({ token, profileName, initialSlotNumber, userId }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [slotNumber, setSlotNumber] = useState(initialSlotNumber)
 
@@ -32,22 +33,27 @@ export function QRDisplay({ token, profileName, initialSlotNumber }: Props) {
     const supabase = createClient()
     const channel = supabase
       .channel('qr-session')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'sessions' }, async () => {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser()
-        if (!user) return
-        const { data } = await supabase
-          .from('sessions')
-          .select('slots(number)')
-          .eq('user_id', user.id)
-          .eq('status', 'active')
-          .maybeSingle()
-        setSlotNumber((data as any)?.slots?.number ?? null)
-      })
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'sessions',
+          filter: `user_id=eq.${userId}`,
+        },
+        async () => {
+          const { data } = await supabase
+            .from('sessions')
+            .select('slots(number)')
+            .eq('user_id', userId)
+            .eq('status', 'active')
+            .maybeSingle()
+          setSlotNumber((data as any)?.slots?.number ?? null)
+        }
+      )
       .subscribe()
     return () => { supabase.removeChannel(channel) }
-  }, [])
+  }, [userId])
 
   const firstName = profileName.split(' ')[0]
 
