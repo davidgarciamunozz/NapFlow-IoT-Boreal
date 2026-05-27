@@ -29,7 +29,9 @@ export async function middleware(request: NextRequest) {
   const isPublic = PUBLIC_APP_ROUTES.some((r) => path.startsWith(r))
 
   if (path.startsWith('/app') && !isPublic && !user) {
-    return NextResponse.redirect(new URL('/app/login', request.url))
+    const redirectResponse = NextResponse.redirect(new URL('/app/login', request.url))
+    response.cookies.getAll().forEach((c) => redirectResponse.cookies.set(c.name, c.value))
+    return redirectResponse
   }
 
   return response
