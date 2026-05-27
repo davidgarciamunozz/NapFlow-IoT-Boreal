@@ -1,0 +1,67 @@
+# 1. Problem Context
+
+The Boreal Room at Icesi University is a relaxation space that currently operates under an unregulated self-service model. This has led to resource hoarding, where a small number of students occupy multiple mats or beanbags simultaneously, exhausting operational capacity before the physical space is actually full. The absence of consequences for misuse, combined with students' tendency to avoid peer confrontation, has normalized inefficient behaviors that negatively impact student well-being. The goal is to transition toward an automated monitoring system that promotes fairness through behavioral design principles.
+
+# 2. System Architecture (Two-Client Model)
+
+The digital ecosystem is divided into two real-time synchronized interaction fronts:
+
+### Client 1 (Control Station / Desktop)
+
+A fixed device located at the room's entrance/exit. Its primary function is to act as a QR code scanner and physical resource assignment center.
+
+### Client 2 (Mobile User App)
+
+The student's personal interface, where they manage their profile, generate their access identifier (QR code), and view their behavioral status (points and reputation).
+
+# 3. Detailed User Flow
+
+### Session Generation
+
+The student opens Client 2, authenticates using their institutional account, and generates a unique QR code. Once generated, the system prevents the creation of additional QR codes until the current session is properly closed through checkout.
+
+### Check-In and Resource Assignment
+
+The user scans their QR code at Client 1. The system validates availability and displays the assigned compartment on screen (e.g., "Proceed to Slot #15").
+
+### Resource Retrieval Detection
+
+Using microcontrollers (Arduino or ESP32) and magnetic sensors installed in each compartment, the system detects when the mat's magnet is separated from the sensor, marking the resource as "In Use."
+
+### Resource Usage
+
+The student uses the assigned mat for resting. The system keeps the session active in the database by linking the user ID to the corresponding sensor/resource ID.
+
+### Return and Validation
+
+#### Physical Action
+
+The user must return the mat to its original slot. The magnetic sensor must detect the presence of the magnet again.
+
+#### Checkout Scan
+
+The user scans the same QR code at Client 1 to initiate the checkout process.
+
+### Session Closure and Gamification
+
+#### Successful Flow
+
+If the sensor confirms the mat has been returned, Client 1 acknowledges the return, closes the session, and awards positive behavior points to the user's profile in Client 2.
+
+#### Failed Flow (Non-Compliance)
+
+If the sensor does not detect the mat when the user attempts checkout, Client 1 displays negative feedback (e.g., "Resource not detected in Slot #15"). The session is still closed to maintain operational flow, but negative points are applied to the user's profile.
+
+# 4. Technical Components and Business Logic
+
+### Sensors
+
+The system uses magnetic sensors (Hall-effect sensors or reed switches) to provide low-cost, durable, binary detection (present/absent) of resources.
+
+### Points Management
+
+A behavioral-design-based incentive system (nudges) is implemented to reward prosocial behavior and discourage resource abandonment.
+
+### Real-Time Synchronization
+
+The backend must manage real-time state updates to ensure that sensor data from the physical furniture is instantly reflected in Client 1's validation logic during the checkout process.
