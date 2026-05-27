@@ -1,3 +1,6 @@
+// QR_SECRET must be set before importing qr.ts. With ts-jest (CommonJS),
+// imports are converted to require() and run after this line, so the env var
+// is available when signToken/verifyToken call secret() lazily.
 process.env.QR_SECRET = 'test-secret-that-is-32-chars-exactly!!'
 
 import { signToken, verifyToken } from '../lib/qr'
@@ -27,5 +30,15 @@ describe('QR token', () => {
     // issuedAt may be the same if called within 1ms, but structure must be valid
     expect(() => verifyToken(t1)).not.toThrow()
     expect(() => verifyToken(t2)).not.toThrow()
+  })
+
+  it('rejects an expired token', () => {
+    // Manually construct a token with an old issuedAt
+    const payload = { userId: 'user-abc-123', issuedAt: Date.now() - 25 * 60 * 60 * 1000 }
+    const { createHmac } = require('crypto')
+    const secret = process.env.QR_SECRET!
+    const data = Buffer.from(JSON.stringify(payload)).toString('base64url')
+    const sig = createHmac('sha256', secret).update(data).digest('base64url')
+    expect(() => verifyToken(`${data}.${sig}`)).toThrow('Token expired')
   })
 })

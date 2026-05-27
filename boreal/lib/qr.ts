@@ -1,4 +1,6 @@
-import { createHmac } from 'crypto'
+import { createHmac, timingSafeEqual } from 'crypto'
+
+const TOKEN_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
 
 function secret(): string {
   if (!process.env.QR_SECRET) throw new Error('QR_SECRET env var is required')
@@ -17,6 +19,19 @@ export function verifyToken(token: string): { userId: string; issuedAt: number }
   if (parts.length !== 2) throw new Error('Invalid token format')
   const [data, sig] = parts
   const expected = createHmac('sha256', secret()).update(data).digest('base64url')
-  if (sig !== expected) throw new Error('Invalid token')
-  return JSON.parse(Buffer.from(data, 'base64url').toString())
+  const sigBuf = Buffer.from(sig)
+  const expBuf = Buffer.from(expected)
+  if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf)) {
+    throw new Error('Invalid token')
+  }
+  let payload: { userId: string; issuedAt: number }
+  try {
+    payload = JSON.parse(Buffer.from(data, 'base64url').toString())
+  } catch {
+    throw new Error('Invalid token')
+  }
+  if (Date.now() - payload.issuedAt > TOKEN_TTL_MS) {
+    throw new Error('Token expired')
+  }
+  return payload
 }
