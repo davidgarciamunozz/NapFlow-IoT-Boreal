@@ -70,7 +70,7 @@ export function RewardsGrid({ rewards, userPoints }: Props) {
   return (
     <>
       {/* ── Ready to Redeem strip ── */}
-      <ReadyToRedeemStrip rewards={rewards} userPoints={userPoints} />
+      <ReadyToRedeemStrip userPoints={userPoints} />
 
       {/* ── Full tier grids ── */}
       <div ref={gridRef}>

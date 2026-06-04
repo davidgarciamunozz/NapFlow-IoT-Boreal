@@ -2,10 +2,8 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { X, Plus } from 'lucide-react'
-import type { Reward } from '@/lib/rewards'
 
 interface Props {
-  rewards: Reward[]
   userPoints: number
 }
 
@@ -33,8 +31,8 @@ function generateCode() {
   return `${letters}-${nums}`
 }
 
-export function ReadyToRedeemStrip({ rewards, userPoints }: Props) {
-  const unlocked = rewards.filter((r) => userPoints >= r.cost)
+export function ReadyToRedeemStrip({ userPoints }: Props) {
+  const unlocked = BEHAVIOR_GRID.filter((r) => userPoints >= r.cost)
 
   // grid popup
   const [showAll, setShowAll]     = useState(false)
@@ -177,8 +175,8 @@ export function ReadyToRedeemStrip({ rewards, userPoints }: Props) {
                       >
                         {i + 1}
                       </span>
-                      {/* Product image — bottom-right, bleeds off edges */}
-                      <div className="absolute bottom-0 right-0 translate-x-3 translate-y-3 w-[78%] h-[78%]">
+                      {/* Product image — bottom-right, bleeds off edges, above number */}
+                      <div className="absolute bottom-0 right-0 translate-x-3 translate-y-3 w-[78%] h-[78%] z-10">
                         <div className="relative w-full h-full">
                           <Image
                             src={item.imageSrc}
