@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/service'
 import { redirect } from 'next/navigation'
 import { Star } from 'lucide-react'
-import { BottomNav } from '@/components/app/BottomNav'
 import { LogoutButton } from '@/components/app/LogoutButton'
 
 export default async function SettingsPage() {
@@ -45,7 +44,6 @@ export default async function SettingsPage() {
       </div>
 
       <LogoutButton />
-      <BottomNav />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react'
+import Image from 'next/image'
 import type { Profile } from '@/lib/types'
 
 const MILESTONES = [
@@ -19,20 +19,24 @@ export function PointsCard({ profile }: { profile: Profile }) {
         <span className="text-white font-bold text-[28px] tracking-tight">
           {profile.points.toLocaleString()}
         </span>
-        <Star size={18} className="text-accent-yellow fill-accent-yellow" />
+        <Image src="/assets/images/circleStarGreen.png" alt="" width={24} height={24} />
       </div>
 
-      <div className="bg-white rounded-[13px] px-4 py-3">
-        <div className="relative flex justify-between items-start pt-3 pb-6">
-          <div className="absolute top-[12px] left-[12px] right-[12px] h-[2px] bg-decoration" />
+      <div className="bg-white rounded-[13px] px-4 pt-6 pb-4">
+        <div className="relative h-[50px]">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-decoration" />
           <div
-            className="absolute top-[12px] left-[12px] h-[2px] bg-active transition-all duration-500"
+            className="absolute top-0 left-0 h-[2px] bg-active transition-all duration-500"
             style={{ width: `${Math.min((profile.points / 2000) * 100, 100)}%` }}
           />
-          {MILESTONES.map((m) => {
+          {MILESTONES.map((m, i) => {
             const reached = profile.points >= m.pts
+            const pos = i === 0 ? 'left-0' : i === 1 ? 'left-1/2 -translate-x-1/2' : 'right-0'
             return (
-              <div key={m.label} className="flex flex-col items-center z-10 gap-1">
+              <div
+                key={m.label}
+                className={`absolute top-[-9px] flex flex-col items-center ${pos}`}
+              >
                 <div
                   className={`w-[20px] h-[20px] rounded-full flex items-center justify-center ${
                     reached ? 'bg-active' : 'bg-white border-2 border-decoration'
@@ -40,10 +44,10 @@ export function PointsCard({ profile }: { profile: Profile }) {
                 >
                   {reached && <span className="text-white text-[9px] font-bold">✓</span>}
                 </div>
-                <span className={`text-[10px] font-bold ${reached ? 'text-active' : 'text-gray-400'}`}>
+                <span className={`mt-1.5 text-[10px] font-bold whitespace-nowrap ${reached ? 'text-active' : 'text-gray-400'}`}>
                   {m.label}
                 </span>
-                <span className="text-[9px] text-gray-300">{m.pts} pts</span>
+                <span className="text-[9px] text-gray-300 whitespace-nowrap">{m.pts} pts</span>
               </div>
             )
           })}

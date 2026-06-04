@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
@@ -30,7 +31,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center px-8 py-12">
+    <div className="relative min-h-screen flex flex-col justify-center px-8 py-12 overflow-hidden">
+      <Image
+        src="/assets/images/logoIcesiGray.png"
+        alt=""
+        width={320}
+        height={320}
+        className="absolute top-[-40px] right-[-40px] opacity-40 pointer-events-none select-none"
+        priority
+      />
       <div className="mb-10">
         <h1 className="text-3xl font-bold text-primary mb-1">Welcome back</h1>
         <p className="text-gray-400 text-sm">Sign in to your Boreal account</p>

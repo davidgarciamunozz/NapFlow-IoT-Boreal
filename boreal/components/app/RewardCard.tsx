@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Star } from 'lucide-react'
 
 interface Props {
@@ -8,19 +9,17 @@ interface Props {
 
 export function RewardCard({ name, cost, imageSrc }: Props) {
   return (
-    <div className="bg-white border border-gray-100 rounded-[15px] p-2.5 flex flex-col gap-1.5 shadow-sm">
+    <div className="bg-white border border-gray-100 rounded-[15px] p-2 flex flex-col gap-1.5 shadow-sm">
       <div className="relative">
-        <img
-          src={imageSrc}
-          alt={name}
-          className="w-full aspect-square object-cover rounded-[10px] bg-decoration"
-        />
-        <div className="absolute top-1.5 left-1.5 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-          <Star size={8} className="fill-accent-yellow text-accent-yellow" />
-          {cost.toLocaleString()} pts
+        <div className="relative w-full aspect-square rounded-[10px] overflow-hidden bg-decoration">
+          <Image src={imageSrc} alt={name} fill className="object-cover" />
+        </div>
+        <div className="absolute top-1.5 left-1.5 bg-primary text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+          <Star size={7} className="fill-accent-yellow text-accent-yellow" />
+          {cost.toLocaleString()}
         </div>
       </div>
-      <span className="text-[11px] font-medium text-text-primary px-0.5">{name}</span>
+      <span className="text-[10px] font-medium text-text-primary px-0.5 leading-tight">{name}</span>
     </div>
   )
 }
