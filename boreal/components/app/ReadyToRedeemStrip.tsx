@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { X, Plus } from 'lucide-react'
 import type { Reward } from '@/lib/rewards'
 
@@ -10,6 +9,21 @@ interface Props {
   userPoints: number
 }
 
+interface GridItem {
+  name: string
+  imageSrc: string
+  cost: number
+}
+
+const BEHAVIOR_GRID: GridItem[] = [
+  { name: 'Key Charm',   imageSrc: '/assets/images/keyCharm.png',   cost: 800  },
+  { name: 'Pencils',     imageSrc: '/assets/images/pencils.png',    cost: 1000 },
+  { name: 'Pencil Case', imageSrc: '/assets/images/pencilCase.png', cost: 1200 },
+  { name: 'Notes',       imageSrc: '/assets/images/notes.png',      cost: 2800 },
+  { name: 'Mug',         imageSrc: '/assets/images/Mug.png',        cost: 2500 },
+  { name: 'Coupon',      imageSrc: '/assets/images/coupon.png',     cost: 3200 },
+  { name: 'ICESI Cap',   imageSrc: '/assets/images/IcesiCap.png',   cost: 3800 },
+]
 
 function generateCode() {
   const letters = Array.from({ length: 3 }, () =>
@@ -20,20 +34,35 @@ function generateCode() {
 }
 
 export function ReadyToRedeemStrip({ rewards, userPoints }: Props) {
-  const router = useRouter()
   const unlocked = rewards.filter((r) => userPoints >= r.cost)
 
-  const [selected, setSelected] = useState<Reward | null>(null)
+  // grid popup
+  const [showAll, setShowAll]     = useState(false)
+  const [allVisible, setAllVisible] = useState(false)
+
+  // detail sheet
+  const [selected, setSelected]       = useState<GridItem | null>(null)
   const [detailVisible, setDetailVisible] = useState(false)
-  const [redeemReward, setRedeemReward] = useState<Reward | null>(null)
-  const [redeemCode, setRedeemCode] = useState<string | null>(null)
+
+  // redeem code modal
+  const [redeemReward, setRedeemReward] = useState<GridItem | null>(null)
+  const [redeemCode, setRedeemCode]     = useState<string | null>(null)
   const [redeemVisible, setRedeemVisible] = useState(false)
 
-  const openDetail = (r: Reward) => {
-    setSelected(r)
-    requestAnimationFrame(() => requestAnimationFrame(() => setDetailVisible(true)))
+  const openAll = () => {
+    setShowAll(true)
+    requestAnimationFrame(() => requestAnimationFrame(() => setAllVisible(true)))
+  }
+  const closeAll = () => {
+    setAllVisible(false)
+    setTimeout(() => setShowAll(false), 300)
   }
 
+  const openDetail = (item: GridItem) => {
+    if (userPoints < item.cost) return
+    setSelected(item)
+    requestAnimationFrame(() => requestAnimationFrame(() => setDetailVisible(true)))
+  }
   const closeDetail = () => {
     setDetailVisible(false)
     setTimeout(() => setSelected(null), 300)
@@ -50,29 +79,27 @@ export function ReadyToRedeemStrip({ rewards, userPoints }: Props) {
       requestAnimationFrame(() => requestAnimationFrame(() => setRedeemVisible(true)))
     }, 300)
   }
-
   const closeRedeem = () => {
     setRedeemVisible(false)
     setTimeout(() => { setRedeemReward(null); setRedeemCode(null) }, 300)
   }
 
   useEffect(() => {
-    const isOpen = !!selected || !!redeemReward
+    const isOpen = showAll || !!selected || !!redeemReward
     document.body.style.overflow = isOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
-  }, [selected, redeemReward])
+  }, [showAll, selected, redeemReward])
 
   const pointsLeft = selected ? Math.max(selected.cost - userPoints, 0) : 0
-  const progress = selected ? Math.min((userPoints / selected.cost) * 100, 100) : 0
+  const progress   = selected ? Math.min((userPoints / selected.cost) * 100, 100) : 0
 
   if (unlocked.length === 0) return null
 
   return (
     <>
+      {/* ── Strip ── */}
       <div className="mt-5">
-        <p className="text-text-primary font-semibold text-sm mb-3 px-5">
-          Ready to Redeem
-        </p>
+        <p className="text-text-primary font-semibold text-sm mb-3 px-5">Ready to Redeem</p>
         <div className="flex gap-3 px-5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {unlocked.slice(0, 3).map((r) => (
             <button
@@ -86,23 +113,151 @@ export function ReadyToRedeemStrip({ rewards, userPoints }: Props) {
               </div>
             </button>
           ))}
-          {unlocked.length > 3 && (
-            <button
-              onClick={() => router.push('/app/rewards')}
-              className="flex-shrink-0 flex flex-col items-center justify-center w-20 gap-2"
-            >
-              <div className="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center">
-                <Plus size={18} className="text-primary" />
-              </div>
-              <span className="text-sm text-primary font-medium">view all</span>
-            </button>
-          )}
+          <button
+            onClick={openAll}
+            className="flex-shrink-0 flex flex-col items-center justify-center w-20 gap-2"
+          >
+            <div className="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center">
+              <Plus size={18} className="text-primary" />
+            </div>
+            <span className="text-sm text-primary font-medium">view all</span>
+          </button>
         </div>
       </div>
 
-      {/* Detail bottom sheet */}
-      {selected && (
+      {/* ── Behavior rewards grid popup ── */}
+      {showAll && (
         <div className="fixed inset-0 z-50 flex items-end">
+          <div
+            className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${allVisible ? 'opacity-100' : 'opacity-0'}`}
+            onClick={closeAll}
+          />
+          <div
+            className={`relative w-full bg-white rounded-t-[2rem] z-10 transition-transform duration-300 ease-out max-h-[90vh] overflow-y-auto ${allVisible ? 'translate-y-0' : 'translate-y-full'}`}
+          >
+            {/* Handle */}
+            <div className="flex justify-center pt-3 pb-1 sticky top-0 bg-white z-10">
+              <div className="w-10 h-1 bg-gray-200 rounded-full" />
+            </div>
+
+            {/* Close */}
+            <button onClick={closeAll} className="absolute top-4 right-4 p-1 text-gray-400 z-20">
+              <X size={22} />
+            </button>
+
+            <div className="px-5 pb-10 pt-2">
+              {/* Header */}
+              <div className="flex flex-col items-center mb-6">
+                <Image src="/assets/images/blueStar.png" alt="" width={52} height={52} className="mb-3" />
+                <h2 className="text-[24px] font-bold text-primary text-center">Behavior rewards</h2>
+                <p className="text-gray-400 text-sm text-center mt-1">
+                  Remember, this space is shared{'\n'}by everyone
+                </p>
+              </div>
+
+              {/* Grid */}
+              <div className="grid grid-cols-3 gap-3">
+                {BEHAVIOR_GRID.slice(0, 6).map((item, i) => {
+                  const isUnlocked = userPoints >= item.cost
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => openDetail(item)}
+                      disabled={!isUnlocked}
+                      className="relative aspect-square rounded-2xl overflow-hidden"
+                    >
+                      <div className="absolute inset-0" style={{ backgroundColor: isUnlocked ? '#5454E9' : '#F3F4F6' }} />
+                      {/* Full-card number watermark */}
+                      <span
+                        className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 font-bold leading-none select-none"
+                        style={{
+                          fontSize: '160px',
+                          color: isUnlocked ? '#4747DD' : 'rgba(0,0,0,0.07)',
+                        }}
+                      >
+                        {i + 1}
+                      </span>
+                      {/* Product image — bottom-right, bleeds off edges */}
+                      <div className="absolute bottom-0 right-0 translate-x-3 translate-y-3 w-[78%] h-[78%]">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={item.imageSrc}
+                            alt={item.name}
+                            fill
+                            className={`object-contain drop-shadow ${!isUnlocked ? 'opacity-40' : ''}`}
+                          />
+                        </div>
+                      </div>
+                      {isUnlocked && (
+                        <div className="absolute top-2 right-2 w-7 h-7">
+                          <Image src="/assets/images/behaviorStar.png" alt="" fill className="object-contain" />
+                        </div>
+                      )}
+                    </button>
+                  )
+                })}
+
+                {/* Row 3: cap full-width (col-span-3) */}
+                {(() => {
+                  const cap = BEHAVIOR_GRID[6]
+                  const isUnlocked = userPoints >= cap.cost
+                  return (
+                    <button
+                      onClick={() => openDetail(cap)}
+                      disabled={!isUnlocked}
+                      className="relative col-span-3 rounded-2xl overflow-hidden"
+                      style={{ aspectRatio: '3/1' }}
+                    >
+                      <div className="absolute inset-0" style={{ backgroundColor: isUnlocked ? '#5454E9' : '#F3F4F6' }} />
+                      {/* Number 7 — left, close to bottom */}
+                      <span
+                        className="absolute bottom-[-18px] left-2 font-bold leading-none select-none"
+                        style={{
+                          fontSize: '160px',
+                          color: isUnlocked ? '#4747DD' : 'rgba(0,0,0,0.07)',
+                        }}
+                      >
+                        7
+                      </span>
+                      {/* Logo — center */}
+                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[80%]">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src="/assets/images/logoIcesiGray.png"
+                            alt=""
+                            fill
+                            className={`object-contain ${isUnlocked ? 'opacity-30' : 'opacity-20'}`}
+                          />
+                        </div>
+                      </div>
+                      {/* Cap — right, bleeds off edge */}
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-[42%] h-[95%]">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={cap.imageSrc}
+                            alt={cap.name}
+                            fill
+                            className={`object-contain drop-shadow ${!isUnlocked ? 'opacity-40' : ''}`}
+                          />
+                        </div>
+                      </div>
+                      {isUnlocked && (
+                        <div className="absolute top-2 right-2 w-7 h-7">
+                          <Image src="/assets/images/behaviorStar.png" alt="" fill className="object-contain" />
+                        </div>
+                      )}
+                    </button>
+                  )
+                })()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Detail bottom sheet ── */}
+      {selected && (
+        <div className="fixed inset-0 z-[60] flex items-end">
           <div
             className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${detailVisible ? 'opacity-100' : 'opacity-0'}`}
             onClick={closeDetail}
@@ -131,9 +286,9 @@ export function ReadyToRedeemStrip({ rewards, userPoints }: Props) {
                 <div className="h-2.5 bg-decoration rounded-full overflow-hidden">
                   <div className="h-full bg-active rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
                 </div>
-                <p className="text-center text-sm mt-3 text-active font-bold">
-                  {pointsLeft === 0 ? "You've unlocked this reward!" : ''}
-                </p>
+                {pointsLeft === 0 && (
+                  <p className="text-center text-sm mt-3 text-active font-bold">You've unlocked this reward!</p>
+                )}
               </div>
               <button
                 onClick={handleClaim}
@@ -146,9 +301,9 @@ export function ReadyToRedeemStrip({ rewards, userPoints }: Props) {
         </div>
       )}
 
-      {/* Redemption code modal */}
+      {/* ── Redemption code modal ── */}
       {redeemReward && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center px-6">
           <div
             className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${redeemVisible ? 'opacity-100' : 'opacity-0'}`}
             onClick={closeRedeem}
@@ -163,13 +318,8 @@ export function ReadyToRedeemStrip({ rewards, userPoints }: Props) {
                 Show this code in the ICESI store<br />to claim your reward.
               </p>
               <div className="relative flex items-center justify-center mt-6 w-[220px] h-[220px]">
-                <Image
-                  src="/assets/images/logoIcesiGray.png"
-                  alt=""
-                  width={220}
-                  height={220}
-                  className="absolute inset-0 opacity-60 pointer-events-none select-none"
-                />
+                <Image src="/assets/images/logoIcesiGray.png" alt="" width={220} height={220}
+                  className="absolute inset-0 opacity-60 pointer-events-none select-none" />
                 <div className="relative z-10 w-36 h-36">
                   <Image src={redeemReward.imageSrc} alt={redeemReward.name} fill className="object-contain drop-shadow-lg" />
                 </div>
