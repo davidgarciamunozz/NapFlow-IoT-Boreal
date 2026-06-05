@@ -150,10 +150,10 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
             onClick={openAll}
             className="flex-shrink-0 flex flex-col items-center justify-center w-20 gap-2"
           >
-            <div className="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center">
-              <Plus size={18} className="text-primary" />
+            <div className="w-10 h-10 rounded-full border-2 flex items-center justify-center" style={{ borderColor: '#5454E9' }}>
+              <Plus size={18} style={{ color: '#5454E9' }} />
             </div>
-            <span className="text-sm text-primary font-medium">view all</span>
+            <span className="text-sm font-medium" style={{ color: '#5454E9' }}>view all</span>
           </button>
         </div>
       )}
