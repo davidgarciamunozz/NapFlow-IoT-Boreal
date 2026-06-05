@@ -79,7 +79,7 @@ export function RewardsGrid({ rewards, userPoints }: Props) {
             <span className="text-[20px] font-bold text-text-primary leading-none">
               {userPoints.toLocaleString()}
             </span>
-            <Image src="/assets/images/circleStarGreen.png" alt="" width={18} height={18} />
+            <Image src="/assets/images/blackStar.png" alt="" width={18} height={18} />
           </div>
         </div>
       </div>
