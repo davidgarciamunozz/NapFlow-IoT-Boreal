@@ -131,7 +131,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                   {/* Number watermark — behind the image */}
                   <span
                     className="absolute -bottom-3 left-1/2 -translate-x-1/2 font-bold leading-none select-none pointer-events-none"
-                    style={{ fontSize: '72px', color: cardNumCol }}
+                    style={{ fontSize: '96px', color: cardNumCol }}
                   >
                     {num}
                   </span>
@@ -141,7 +141,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                   </div>
                 </div>
                 <div className="absolute -top-2 -right-2 z-10">
-                  <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={56} height={56} className="w-7 h-7" />
+                  <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={40} height={40} className="w-5 h-5" />
                 </div>
               </button>
             )
