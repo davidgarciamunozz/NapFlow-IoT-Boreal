@@ -10,7 +10,7 @@ interface Props {
   userPoints: number
 }
 
-const TIERS = [2000, 4000]
+const TIERS = [500, 1000]
 
 
 function generateCode() {
