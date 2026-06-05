@@ -42,7 +42,10 @@ export function PointsCard({ profile }: { profile: Profile }) {
                     reached ? 'bg-active' : 'bg-white border-2 border-decoration'
                   }`}
                 >
-                  {reached && <span className="text-white text-[9px] font-bold">✓</span>}
+                  {m.label === 'Pen'
+                    ? <Image src="/assets/images/penIcon.png" alt="" width={12} height={12} />
+                    : reached && <span className="text-white text-[9px] font-bold">✓</span>
+                  }
                 </div>
                 <span className={`mt-1.5 text-[10px] font-bold whitespace-nowrap ${reached ? 'text-active' : 'text-gray-400'}`}>
                   {m.label}
