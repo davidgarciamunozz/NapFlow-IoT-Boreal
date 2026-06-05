@@ -10,16 +10,16 @@ const MILESTONES = [
 export function PointsCard({ profile }: { profile: Profile }) {
   return (
     <div className="bg-primary rounded-[15px] p-4 mx-5">
-      <div className="flex items-start justify-between mb-1">
-        <span className="text-white/70 text-sm">points</span>
-        <span className="text-white font-bold text-sm">{profile.streak_days} day streak!</span>
-      </div>
+      <span className="text-white/70 text-sm mb-1 block">points</span>
 
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-white font-bold text-[28px] tracking-tight">
-          {profile.points.toLocaleString()}
-        </span>
-        <Image src="/assets/images/circleStarGreen.png" alt="" width={24} height={24} />
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <span className="text-white font-bold text-[28px] tracking-tight">
+            {profile.points.toLocaleString()}
+          </span>
+          <Image src="/assets/images/circleStarGreen.png" alt="" width={24} height={24} />
+        </div>
+        <span className="text-white font-bold text-sm">{profile.streak_days} day streak!</span>
       </div>
 
       <div className="bg-white rounded-[13px] px-4 pt-6 pb-4">
