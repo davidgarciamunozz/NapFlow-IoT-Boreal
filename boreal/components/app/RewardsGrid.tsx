@@ -95,7 +95,7 @@ export function RewardsGrid({ rewards, userPoints }: Props) {
               <button
                 key={r.name}
                 onClick={() => open(r)}
-                className="flex-shrink-0 w-[120px] text-left"
+                className="flex-shrink-0 w-[150px] text-left"
               >
                 <RewardCard
                   name={r.name}
