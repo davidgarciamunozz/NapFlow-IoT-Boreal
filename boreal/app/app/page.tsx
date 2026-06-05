@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { Bell, QrCode } from 'lucide-react'
 import { PointsCard } from '@/components/app/PointsCard'
 import { AvailabilityGauge } from '@/components/app/AvailabilityGauge'
-import { ReadyToRedeemStrip } from '@/components/app/ReadyToRedeemStrip'
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -55,9 +54,7 @@ export default async function HomePage() {
           {profile && <PointsCard profile={profile} />}
         </div>
 
-        {/* Group 2: Ready to Redeem + QR code button */}
-        <div className="flex flex-col gap-4">
-        {profile && <ReadyToRedeemStrip userPoints={profile.points} />}
+        {/* Group 2: QR code button */}
         <div className="mx-5">
           <Link
             href="/app/qr"
@@ -68,7 +65,6 @@ export default async function HomePage() {
             </span>
             <QrCode size={28} strokeWidth={2} />
           </Link>
-        </div>
         </div>
 
         {/* Group 3: availability gauge */}
