@@ -136,12 +136,12 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                     {num}
                   </span>
                   {/* Product image — bottom-right, bleeds off edge like the grid cards */}
-                  <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 w-[74%] h-[74%] z-10">
+                  <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 w-[88%] h-[88%] z-10">
                     <Image src={r.imageSrc} alt={r.name} fill className="object-contain drop-shadow" />
                   </div>
                 </div>
                 <div className="absolute -top-2 -right-2 z-10">
-                  <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={40} height={40} className="w-5 h-5" />
+                  <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={56} height={56} className="w-7 h-7" />
                 </div>
               </button>
             )
