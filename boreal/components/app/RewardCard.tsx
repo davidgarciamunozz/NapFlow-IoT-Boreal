@@ -16,9 +16,9 @@ export function RewardCard({ name, cost, imageSrc, imageClassName }: Props) {
             <Image src="/assets/images/logoIcesiGray.png" alt="" fill className="object-contain p-2" />
             <Image src={imageSrc} alt={name} fill className={`object-contain ${imageClassName ?? ''}`} />
           </div>
-          <div className="absolute top-1.5 left-1.5 bg-primary text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-            <Image src="/assets/images/whiteStar.png" alt="" width={8} height={8} />
-            {cost.toLocaleString()}
+          <div className="absolute top-1.5 left-1.5 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
+            <Image src="/assets/images/whiteStar.png" alt="" width={10} height={10} />
+            {cost.toLocaleString()}<span className="font-medium">pts</span>
           </div>
         </div>
       </div>
