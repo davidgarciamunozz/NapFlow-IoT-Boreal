@@ -98,14 +98,20 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
   const pointsLeft = selected ? Math.max(selected.cost - userPoints, 0) : 0
   const progress   = selected ? Math.min((userPoints / selected.cost) * 100, 100) : 0
 
-  if (unlocked.length === 0) return null
-
   return (
     <>
-      {/* ── Strip ── */}
-      <div className="mt-5">
-        <p className="text-text-primary font-semibold text-sm mb-3 px-5">Ready to Redeem</p>
-        <div className="flex gap-3 px-5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {/* ── Behavior rewards card ── */}
+      <button
+        onClick={openAll}
+        className="mx-5 w-[calc(100%-40px)] bg-primary rounded-3xl py-5 flex flex-col items-center"
+      >
+        <Image src="/assets/images/StarsKiosk.png" alt="" width={80} height={56} priority />
+        <span className="text-white font-bold text-xl mt-2">Behavior rewards</span>
+      </button>
+
+      {/* ── Unlocked thumbnails strip ── */}
+      {unlocked.length > 0 && (
+        <div className="flex gap-3 px-5 overflow-x-auto pb-1 mt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {unlocked.slice(0, 3).map((r) => (
             <button
               key={r.name}
@@ -128,7 +134,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
             <span className="text-sm text-primary font-medium">view all</span>
           </button>
         </div>
-      </div>
+      )}
 
       {/* ── Behavior rewards grid popup ── */}
       {showAll && (

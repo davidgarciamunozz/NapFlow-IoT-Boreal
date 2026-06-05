@@ -1,9 +1,8 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { X } from 'lucide-react'
 import { RewardCard } from './RewardCard'
-import { ReadyToRedeemStrip } from './ReadyToRedeemStrip'
 import type { Reward } from '@/lib/rewards'
 
 interface Props {
@@ -28,7 +27,6 @@ export function RewardsGrid({ rewards, userPoints }: Props) {
   const [redeemReward, setRedeemReward] = useState<Reward | null>(null)
   const [redeemCode, setRedeemCode] = useState<string | null>(null)
   const [redeemVisible, setRedeemVisible] = useState(false)
-  const gridRef = useRef<HTMLDivElement>(null)
 
   const open = (reward: Reward) => {
     setSelected(reward)
@@ -69,26 +67,42 @@ export function RewardsGrid({ rewards, userPoints }: Props) {
 
   return (
     <>
-      {/* ── Ready to Redeem strip ── */}
-      <ReadyToRedeemStrip userPoints={userPoints} />
-
-      {/* ── Full tier grids ── */}
-      <div ref={gridRef}>
-        {TIERS.map((tier) => (
-          <div key={tier} className="mt-6 px-5">
-            <p className="text-text-primary font-semibold text-sm mb-3">
-              Up to {tier.toLocaleString()} pts
-            </p>
-            <div className="grid grid-cols-3 gap-3">
-              {rewards.filter((r) => r.tier === tier).map((r) => (
-                <button key={r.name} onClick={() => open(r)} className="text-left w-full">
-                  <RewardCard name={r.name} cost={r.cost} imageSrc={r.imageSrc} />
-                </button>
-              ))}
-            </div>
+      {/* ── Points Rewards header ── */}
+      <div className="flex items-start justify-between px-5 mt-7 mb-1">
+        <div>
+          <h2 className="text-[22px] font-bold text-text-primary leading-tight">Points Rewards</h2>
+          <p className="text-sm text-gray-400 mt-0.5">Claim with your points</p>
+        </div>
+        <div className="text-right">
+          <p className="text-[11px] text-gray-400 mb-0.5">Your points</p>
+          <div className="flex items-center justify-end gap-1.5">
+            <span className="text-[20px] font-bold text-text-primary leading-none">
+              {userPoints.toLocaleString()}
+            </span>
+            <Image src="/assets/images/circleStarGreen.png" alt="" width={18} height={18} />
           </div>
-        ))}
+        </div>
       </div>
+
+      {/* ── Tier rows (horizontal scroll) ── */}
+      {TIERS.map((tier) => (
+        <div key={tier} className="mt-5">
+          <p className="text-text-primary font-semibold text-sm mb-3 px-5">
+            Up to {tier.toLocaleString()} pts
+          </p>
+          <div className="flex gap-3 px-5 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {rewards.filter((r) => r.tier === tier).map((r) => (
+              <button
+                key={r.name}
+                onClick={() => open(r)}
+                className="flex-shrink-0 w-[120px] text-left"
+              >
+                <RewardCard name={r.name} cost={r.cost} imageSrc={r.imageSrc} />
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
 
       {/* ── Detail bottom sheet ── */}
       {selected && (
