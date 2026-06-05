@@ -127,14 +127,18 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                 onClick={() => openDetail(r)}
                 className="relative flex-shrink-0 w-20 h-20"
               >
-                <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-sm">
-                  <Image src={r.imageSrc} alt={r.name} fill className="object-cover" />
+                <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-sm" style={{ backgroundColor: cardBg }}>
+                  {/* Number watermark — behind the image */}
                   <span
-                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 font-bold leading-none select-none pointer-events-none"
-                    style={{ fontSize: '60px', color: 'rgba(255,255,255,0.35)' }}
+                    className="absolute -bottom-3 left-1/2 -translate-x-1/2 font-bold leading-none select-none pointer-events-none"
+                    style={{ fontSize: '72px', color: cardNumCol }}
                   >
                     {num}
                   </span>
+                  {/* Product image — bottom-right, bleeds off edge like the grid cards */}
+                  <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 w-[74%] h-[74%] z-10">
+                    <Image src={r.imageSrc} alt={r.name} fill className="object-contain drop-shadow" />
+                  </div>
                 </div>
                 <div className="absolute -top-2 -right-2 z-10">
                   <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={56} height={56} className="w-7 h-7" />
