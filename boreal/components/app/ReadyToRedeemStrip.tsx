@@ -36,10 +36,10 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
   const unlocked = BEHAVIOR_GRID.filter((r) => userPoints >= r.cost)
   const { darkMode } = useAccessibility()
 
-  const cardBg      = darkMode ? '#7c6fff' : '#5454E9'
-  const cardNumCol  = darkMode ? '#6a5eee' : '#4747DD'
-  const lockedBg    = darkMode ? '#1c1c30' : '#F3F4F6'
-  const lockedNumCol = darkMode ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'
+  const cardBg      = darkMode ? '#7c6fff' : '#E6E7EC'
+  const cardNumCol  = darkMode ? '#6a5eee' : '#C8C8CB'
+  const lockedBg    = darkMode ? '#1c1c30' : '#E6E7EC'
+  const lockedNumCol = darkMode ? 'rgba(255,255,255,0.07)' : '#C8C8CB'
 
   // grid popup
   const [showAll, setShowAll]     = useState(false)
@@ -127,17 +127,16 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
               className="relative flex-shrink-0 w-20 h-20"
             >
               <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-sm" style={{ backgroundColor: isUnlocked ? cardBg : lockedBg }}>
-                {/* Number watermark — behind the image */}
                 <span
                   className="absolute -bottom-3 left-1/2 -translate-x-1/2 font-bold leading-none select-none pointer-events-none"
-                  style={{ fontSize: '96px', color: isUnlocked ? cardNumCol : lockedNumCol }}
+                  style={{ fontSize: '96px', color: cardNumCol }}
                 >
                   {num + 1}
                 </span>
-                {/* Product image — bottom-right, bleeds off edge */}
-                <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 w-[88%] h-[88%] z-10">
-                  <Image src={r.imageSrc} alt={r.name} fill className={`object-contain drop-shadow ${!isUnlocked ? 'opacity-40' : ''}`} />
+                <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 w-[88%] h-[88%]">
+                  <Image src={r.imageSrc} alt={r.name} fill className="object-contain drop-shadow" />
                 </div>
+                <div className="absolute inset-0 bg-white/70 pointer-events-none z-10" />
               </div>
               {isUnlocked && (
                 <div className="absolute -top-1 -right-1 z-10">
@@ -197,32 +196,28 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                       key={item.name}
                       onClick={() => openDetail(item)}
                       disabled={!isUnlocked}
-                      className="relative aspect-square rounded-2xl overflow-hidden"
+                      className="relative aspect-square rounded-2xl"
                     >
-                      <div className="absolute inset-0" style={{ backgroundColor: isUnlocked ? cardBg : lockedBg }} />
-                      {/* Full-card number watermark */}
-                      <span
-                        className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 font-bold leading-none select-none"
-                        style={{
-                          fontSize: '160px',
-                          color: isUnlocked ? cardNumCol : lockedNumCol,
-                        }}
+                      {/* Background + clip on a div — avoids Safari button background rendering issues */}
+                      <div
+                        className="absolute inset-0 rounded-2xl overflow-hidden"
+                        style={{ backgroundColor: isUnlocked ? cardBg : lockedBg }}
                       >
-                        {i + 1}
-                      </span>
-                      {/* Product image — bottom-right, bleeds off edges, above number */}
-                      <div className="absolute bottom-0 right-0 translate-x-3 translate-y-3 w-[78%] h-[78%] z-10">
-                        <div className="relative w-full h-full">
-                          <Image
-                            src={item.imageSrc}
-                            alt={item.name}
-                            fill
-                            className={`object-contain drop-shadow ${!isUnlocked ? 'opacity-40' : ''}`}
-                          />
+                        <span
+                          className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 font-bold leading-none select-none"
+                          style={{ fontSize: '160px', color: cardNumCol }}
+                        >
+                          {i + 1}
+                        </span>
+                        <div className="absolute bottom-0 right-0 translate-x-3 translate-y-3 w-[78%] h-[78%]">
+                          <div className="relative w-full h-full">
+                            <Image src={item.imageSrc} alt={item.name} fill className="object-contain" />
+                          </div>
                         </div>
+                        <div className="absolute inset-0 bg-white/70 pointer-events-none" />
                       </div>
                       {isUnlocked && (
-                        <div className="absolute top-2 right-2 w-7 h-7">
+                        <div className="absolute top-2 right-2 w-7 h-7 z-10">
                           <Image src="/assets/images/behaviorStar.png" alt="" fill className="object-contain" />
                         </div>
                       )}
@@ -238,44 +233,33 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                     <button
                       onClick={() => openDetail(cap)}
                       disabled={!isUnlocked}
-                      className="relative col-span-3 rounded-2xl overflow-hidden"
+                      className="relative col-span-3 rounded-2xl"
                       style={{ aspectRatio: '3/1' }}
                     >
-                      <div className="absolute inset-0" style={{ backgroundColor: isUnlocked ? cardBg : lockedBg }} />
-                      {/* Number 7 — left, close to bottom */}
-                      <span
-                        className="absolute bottom-[-18px] left-2 font-bold leading-none select-none"
-                        style={{
-                          fontSize: '160px',
-                          color: isUnlocked ? cardNumCol : lockedNumCol,
-                        }}
+                      <div
+                        className="absolute inset-0 rounded-2xl overflow-hidden"
+                        style={{ backgroundColor: isUnlocked ? cardBg : lockedBg }}
                       >
-                        7
-                      </span>
-                      {/* Logo — center */}
-                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[80%]">
-                        <div className="relative w-full h-full">
-                          <Image
-                            src="/assets/images/logoIcesiGray.png"
-                            alt=""
-                            fill
-                            className={`object-contain ${isUnlocked ? 'opacity-30' : 'opacity-20'}`}
-                          />
+                        <span
+                          className="absolute bottom-[-18px] left-2 font-bold leading-none select-none"
+                          style={{ fontSize: '160px', color: cardNumCol }}
+                        >
+                          7
+                        </span>
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[80%]">
+                          <div className="relative w-full h-full">
+                            <Image src="/assets/images/logoIcesiGray.png" alt="" fill className="object-contain opacity-30" />
+                          </div>
                         </div>
-                      </div>
-                      {/* Cap — right, bleeds off edge */}
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-[42%] h-[95%]">
-                        <div className="relative w-full h-full">
-                          <Image
-                            src={cap.imageSrc}
-                            alt={cap.name}
-                            fill
-                            className={`object-contain drop-shadow ${!isUnlocked ? 'opacity-40' : ''}`}
-                          />
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-[42%] h-[95%]">
+                          <div className="relative w-full h-full">
+                            <Image src={cap.imageSrc} alt={cap.name} fill className="object-contain" />
+                          </div>
                         </div>
+                        <div className="absolute inset-0 bg-white/70 pointer-events-none" />
                       </div>
                       {isUnlocked && (
-                        <div className="absolute top-2 right-2 w-7 h-7">
+                        <div className="absolute top-2 right-2 w-7 h-7 z-10">
                           <Image src="/assets/images/behaviorStar.png" alt="" fill className="object-contain" />
                         </div>
                       )}
