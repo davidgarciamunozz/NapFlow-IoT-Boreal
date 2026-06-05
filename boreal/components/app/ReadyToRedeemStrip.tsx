@@ -103,10 +103,19 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
       {/* ── Behavior rewards card ── */}
       <button
         onClick={openAll}
-        className="mx-5 w-[calc(100%-40px)] bg-primary rounded-3xl py-5 flex flex-col items-center"
+        className="relative mx-5 w-[calc(100%-40px)] bg-primary rounded-3xl py-5 flex flex-col items-center overflow-hidden"
       >
-        <Image src="/assets/images/StarsKiosk.png" alt="" width={80} height={56} priority />
-        <span className="text-white font-bold text-xl mt-2">Behavior rewards</span>
+        {/* watermark stars */}
+        <div className="absolute inset-0 pointer-events-none select-none">
+          <Image src="/assets/images/circleStar.png" alt="" width={95} height={95} className="absolute -top-6 -left-6 opacity-30 brightness-50" />
+          <Image src="/assets/images/circleStar.png" alt="" width={60} height={60} className="absolute top-6 left-24 opacity-20 brightness-50" />
+          <Image src="/assets/images/circleStar.png" alt="" width={85} height={85} className="absolute -top-4 -right-4 opacity-30 brightness-50" />
+          <Image src="/assets/images/circleStar.png" alt="" width={105} height={105} className="absolute -bottom-8 -left-8 opacity-30 brightness-50" />
+          <Image src="/assets/images/circleStar.png" alt="" width={100} height={100} className="absolute -bottom-6 -right-6 opacity-30 brightness-50" />
+          <Image src="/assets/images/circleStar.png" alt="" width={55} height={55} className="absolute bottom-8 right-20 opacity-20 brightness-50" />
+        </div>
+        <Image src="/assets/images/StarsKiosk.png" alt="" width={80} height={56} priority className="relative z-10" />
+        <span className="relative z-10 text-white font-bold text-xl mt-2">Behavior rewards</span>
       </button>
 
       {/* ── Unlocked thumbnails strip ── */}
