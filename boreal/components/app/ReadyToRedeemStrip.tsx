@@ -116,47 +116,47 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
         <span className="relative z-10 text-white font-bold text-xl mt-2">Behavior rewards</span>
       </button>
 
-      {/* ── Unlocked thumbnails strip ── */}
-      {unlocked.length > 0 && (
-        <div className="flex gap-3 px-5 overflow-x-auto pt-2 pb-1 mt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {unlocked.slice(0, 3).map((r) => {
-            const num = BEHAVIOR_GRID.findIndex((item) => item.name === r.name) + 1
-            return (
-              <button
-                key={r.name}
-                onClick={() => openDetail(r)}
-                className="relative flex-shrink-0 w-20 h-20"
-              >
-                <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-sm" style={{ backgroundColor: cardBg }}>
-                  {/* Number watermark — behind the image */}
-                  <span
-                    className="absolute -bottom-3 left-1/2 -translate-x-1/2 font-bold leading-none select-none pointer-events-none"
-                    style={{ fontSize: '96px', color: cardNumCol }}
-                  >
-                    {num}
-                  </span>
-                  {/* Product image — bottom-right, bleeds off edge like the grid cards */}
-                  <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 w-[88%] h-[88%] z-10">
-                    <Image src={r.imageSrc} alt={r.name} fill className="object-contain drop-shadow" />
-                  </div>
+      {/* ── Thumbnails strip (always visible) ── */}
+      <div className="flex gap-3 px-5 overflow-x-auto pt-2 pb-1 mt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {BEHAVIOR_GRID.slice(0, 3).map((r, num) => {
+          const isUnlocked = userPoints >= r.cost
+          return (
+            <button
+              key={r.name}
+              onClick={() => isUnlocked && openDetail(r)}
+              className="relative flex-shrink-0 w-20 h-20"
+            >
+              <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-sm" style={{ backgroundColor: isUnlocked ? cardBg : lockedBg }}>
+                {/* Number watermark — behind the image */}
+                <span
+                  className="absolute -bottom-3 left-1/2 -translate-x-1/2 font-bold leading-none select-none pointer-events-none"
+                  style={{ fontSize: '96px', color: isUnlocked ? cardNumCol : lockedNumCol }}
+                >
+                  {num + 1}
+                </span>
+                {/* Product image — bottom-right, bleeds off edge */}
+                <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 w-[88%] h-[88%] z-10">
+                  <Image src={r.imageSrc} alt={r.name} fill className={`object-contain drop-shadow ${!isUnlocked ? 'opacity-40' : ''}`} />
                 </div>
+              </div>
+              {isUnlocked && (
                 <div className="absolute -top-1 -right-1 z-10">
                   <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={56} height={56} className="w-7 h-7" />
                 </div>
-              </button>
-            )
-          })}
-          <button
-            onClick={openAll}
-            className="flex-shrink-0 flex flex-col items-center justify-center w-20 gap-2"
-          >
-            <div className="w-10 h-10 rounded-full border-2 flex items-center justify-center" style={{ borderColor: '#5454E9' }}>
-              <Plus size={18} style={{ color: '#5454E9' }} />
-            </div>
-            <span className="text-sm font-medium" style={{ color: '#5454E9' }}>view all</span>
-          </button>
-        </div>
-      )}
+              )}
+            </button>
+          )
+        })}
+        <button
+          onClick={openAll}
+          className="flex-shrink-0 flex flex-col items-center justify-center w-20 gap-2"
+        >
+          <div className="w-10 h-10 rounded-full border-2 flex items-center justify-center" style={{ borderColor: '#5454E9' }}>
+            <Plus size={18} style={{ color: '#5454E9' }} />
+          </div>
+          <span className="text-sm font-medium" style={{ color: '#5454E9' }}>view all</span>
+        </button>
+      </div>
 
       {/* ── Behavior rewards grid popup ── */}
       {showAll && (

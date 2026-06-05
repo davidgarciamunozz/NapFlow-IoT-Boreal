@@ -102,6 +102,7 @@ export function RewardsGrid({ rewards, userPoints }: Props) {
                   cost={r.cost}
                   imageSrc={r.imageSrc}
                   imageClassName={r.imageSrc.includes('NoteBookRed') ? 'p-3' : undefined}
+                  locked={userPoints < r.cost}
                 />
               </button>
             ))}

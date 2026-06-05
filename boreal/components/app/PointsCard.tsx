@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { Lock } from 'lucide-react'
 import type { Profile } from '@/lib/types'
 
 const MILESTONES = [
@@ -43,9 +44,11 @@ export function PointsCard({ profile }: { profile: Profile }) {
                     reached ? 'bg-active' : 'bg-white border-2 border-decoration'
                   }`}
                 >
-                  {m.label === 'Pen'
-                    ? <Image src="/assets/images/penIcon.png" alt="" width={16} height={16} />
-                    : reached && <span className="text-white text-[11px] font-bold">✓</span>
+                  {reached
+                    ? m.label === 'Pen'
+                      ? <Image src="/assets/images/penIcon.png" alt="" width={16} height={16} />
+                      : <span className="text-white text-[11px] font-bold">✓</span>
+                    : <Lock size={12} className="text-gray-300" strokeWidth={2.5} />
                   }
                 </div>
                 <span className={`mt-1.5 text-[10px] font-bold whitespace-nowrap ${reached ? 'text-active' : 'text-gray-400'}`}>

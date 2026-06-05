@@ -12,6 +12,8 @@ const NAV_LINKS = [
 export function BottomNav() {
   const pathname = usePathname()
 
+  if (pathname === '/app/login' || pathname === '/app/register') return null
+
   const activeIndex = NAV_LINKS.findIndex(({ href }) =>
     href === '/app' ? pathname === '/app' : pathname.startsWith(href)
   )
