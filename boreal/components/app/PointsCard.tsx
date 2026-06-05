@@ -35,16 +35,16 @@ export function PointsCard({ profile }: { profile: Profile }) {
             return (
               <div
                 key={m.label}
-                className={`absolute top-[-9px] flex flex-col items-center ${pos}`}
+                className={`absolute top-[-13px] flex flex-col items-center ${pos}`}
               >
                 <div
-                  className={`w-[20px] h-[20px] rounded-full flex items-center justify-center ${
+                  className={`w-[28px] h-[28px] rounded-full flex items-center justify-center ${
                     reached ? 'bg-active' : 'bg-white border-2 border-decoration'
                   }`}
                 >
                   {m.label === 'Pen'
-                    ? <Image src="/assets/images/penIcon.png" alt="" width={12} height={12} />
-                    : reached && <span className="text-white text-[9px] font-bold">✓</span>
+                    ? <Image src="/assets/images/penIcon.png" alt="" width={16} height={16} />
+                    : reached && <span className="text-white text-[11px] font-bold">✓</span>
                   }
                 </div>
                 <span className={`mt-1.5 text-[10px] font-bold whitespace-nowrap ${reached ? 'text-active' : 'text-gray-400'}`}>
