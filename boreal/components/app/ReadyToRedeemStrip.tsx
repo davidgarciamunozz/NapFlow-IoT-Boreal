@@ -123,10 +123,12 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
             <button
               key={r.name}
               onClick={() => openDetail(r)}
-              className="relative flex-shrink-0 w-20 h-20 rounded-2xl overflow-hidden shadow-sm"
+              className="relative flex-shrink-0 w-20 h-20"
             >
-              <Image src={r.imageSrc} alt={r.name} fill className="object-cover" />
-              <div className="absolute top-2 left-2 w-7 h-7 rounded-full bg-accent-yellow flex items-center justify-center shadow">
+              <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-sm">
+                <Image src={r.imageSrc} alt={r.name} fill className="object-cover" />
+              </div>
+              <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-accent-yellow flex items-center justify-center shadow z-10">
                 <span className="text-primary text-[13px] leading-none">★</span>
               </div>
             </button>
