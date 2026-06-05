@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { Star } from 'lucide-react'
 
 interface Props {
   name: string
@@ -16,7 +15,7 @@ export function RewardCard({ name, cost, imageSrc }: Props) {
           <Image src={imageSrc} alt={name} fill className="object-contain" />
         </div>
         <div className="absolute top-1.5 left-1.5 bg-primary text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-          <Star size={7} className="fill-accent-yellow text-accent-yellow" />
+          <Image src="/assets/images/whiteStar.png" alt="" width={8} height={8} />
           {cost.toLocaleString()}
         </div>
       </div>
