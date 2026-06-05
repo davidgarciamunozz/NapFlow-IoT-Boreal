@@ -37,9 +37,10 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
   const { darkMode } = useAccessibility()
 
   const cardBg      = darkMode ? '#7c6fff' : '#E6E7EC'
-  const cardNumCol  = darkMode ? '#6a5eee' : '#C8C8CB'
+  const cardNumCol  = darkMode ? '#C8C8CB' : '#C8C8CB'
   const lockedBg    = darkMode ? '#1c1c30' : '#E6E7EC'
   const lockedNumCol = darkMode ? 'rgba(255,255,255,0.07)' : '#C8C8CB'
+  const overlayBg   = darkMode ? 'rgba(13,17,48,0.7)' : 'rgba(255,255,255,0.7)'
 
   // grid popup
   const [showAll, setShowAll]     = useState(false)
@@ -136,7 +137,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                 <div className="absolute bottom-0 right-0 translate-x-2 translate-y-2 w-[88%] h-[88%]">
                   <Image src={r.imageSrc} alt={r.name} fill className="object-contain drop-shadow" />
                 </div>
-                <div className="absolute inset-0 bg-white/70 pointer-events-none z-10" />
+                <div className="absolute inset-0 pointer-events-none z-10" style={{ backgroundColor: overlayBg }} />
               </div>
               {isUnlocked && (
                 <div className="absolute -top-1 -right-1 z-10">
@@ -214,7 +215,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                             <Image src={item.imageSrc} alt={item.name} fill className="object-contain" />
                           </div>
                         </div>
-                        <div className="absolute inset-0 bg-white/70 pointer-events-none" />
+                        <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: overlayBg }} />
                       </div>
                       {isUnlocked && (
                         <div className="absolute top-2 right-2 w-7 h-7 z-10">
@@ -256,7 +257,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                             <Image src={cap.imageSrc} alt={cap.name} fill className="object-contain" />
                           </div>
                         </div>
-                        <div className="absolute inset-0 bg-white/70 pointer-events-none" />
+                        <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: overlayBg }} />
                       </div>
                       {isUnlocked && (
                         <div className="absolute top-2 right-2 w-7 h-7 z-10">
