@@ -118,7 +118,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
 
       {/* ── Unlocked thumbnails strip ── */}
       {unlocked.length > 0 && (
-        <div className="flex gap-3 px-5 overflow-x-auto pb-1 mt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-3 px-5 overflow-x-auto pt-2 pb-1 mt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {unlocked.slice(0, 3).map((r) => (
             <button
               key={r.name}
