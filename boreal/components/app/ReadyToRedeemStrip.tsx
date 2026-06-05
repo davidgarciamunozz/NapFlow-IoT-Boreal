@@ -18,7 +18,7 @@ const BEHAVIOR_GRID: GridItem[] = [
   { name: 'Key Charm',   imageSrc: '/assets/images/keyCharm.png',   cost: 800  },
   { name: 'Pencils',     imageSrc: '/assets/images/pencils.png',    cost: 1000 },
   { name: 'Pencil Case', imageSrc: '/assets/images/pencilCase.png', cost: 1200 },
-  { name: 'Notes',       imageSrc: '/assets/images/notes.png',      cost: 2800 },
+  { name: 'Notes',       imageSrc: '/assets/images/NoteBookRed.png', cost: 2800 },
   { name: 'Mug',         imageSrc: '/assets/images/Mug.png',        cost: 2500 },
   { name: 'Coupon',      imageSrc: '/assets/images/coupon.png',     cost: 3200 },
   { name: 'ICESI Cap',   imageSrc: '/assets/images/IcesiCap.png',   cost: 3800 },

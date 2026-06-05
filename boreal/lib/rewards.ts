@@ -6,7 +6,7 @@ export interface Reward {
 }
 
 export const REWARDS: Reward[] = [
-  { name: 'Notebook Set',  cost: 150,  tier: 2000, imageSrc: '/assets/images/notes.png' },
+  { name: 'Notebook Set',  cost: 150,  tier: 2000, imageSrc: '/assets/images/NoteBookRed.png' },
   { name: 'Coffee Mug',    cost: 300,  tier: 2000, imageSrc: '/assets/images/Mug.png' },
   { name: 'ICESI Bag',     cost: 500,  tier: 2000, imageSrc: '/assets/images/IcesiBag.png' },
   { name: 'Lunch Bag',     cost: 600,  tier: 2000, imageSrc: '/assets/images/lunchBag.png' },
