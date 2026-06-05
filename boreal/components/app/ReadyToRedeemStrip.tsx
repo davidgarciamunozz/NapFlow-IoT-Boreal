@@ -119,20 +119,29 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
       {/* ── Unlocked thumbnails strip ── */}
       {unlocked.length > 0 && (
         <div className="flex gap-3 px-5 overflow-x-auto pt-2 pb-1 mt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {unlocked.slice(0, 3).map((r) => (
-            <button
-              key={r.name}
-              onClick={() => openDetail(r)}
-              className="relative flex-shrink-0 w-20 h-20"
-            >
-              <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-sm">
-                <Image src={r.imageSrc} alt={r.name} fill className="object-cover" />
-              </div>
-              <div className="absolute -top-2 -right-2 z-10">
-                <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={56} height={56} className="w-7 h-7" />
-              </div>
-            </button>
-          ))}
+          {unlocked.slice(0, 3).map((r) => {
+            const num = BEHAVIOR_GRID.findIndex((item) => item.name === r.name) + 1
+            return (
+              <button
+                key={r.name}
+                onClick={() => openDetail(r)}
+                className="relative flex-shrink-0 w-20 h-20"
+              >
+                <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-sm">
+                  <Image src={r.imageSrc} alt={r.name} fill className="object-cover" />
+                  <span
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 font-bold leading-none select-none pointer-events-none"
+                    style={{ fontSize: '60px', color: 'rgba(255,255,255,0.35)' }}
+                  >
+                    {num}
+                  </span>
+                </div>
+                <div className="absolute -top-2 -right-2 z-10">
+                  <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={56} height={56} className="w-7 h-7" />
+                </div>
+              </button>
+            )
+          })}
           <button
             onClick={openAll}
             className="flex-shrink-0 flex flex-col items-center justify-center w-20 gap-2"
