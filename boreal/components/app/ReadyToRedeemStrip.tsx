@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { X, Plus } from 'lucide-react'
+import { useAccessibility } from '@/contexts/AccessibilityContext'
 
 interface Props {
   userPoints: number
@@ -33,6 +34,12 @@ function generateCode() {
 
 export function ReadyToRedeemStrip({ userPoints }: Props) {
   const unlocked = BEHAVIOR_GRID.filter((r) => userPoints >= r.cost)
+  const { darkMode } = useAccessibility()
+
+  const cardBg      = darkMode ? '#7c6fff' : '#5454E9'
+  const cardNumCol  = darkMode ? '#6a5eee' : '#4747DD'
+  const lockedBg    = darkMode ? '#1c1c30' : '#F3F4F6'
+  const lockedNumCol = darkMode ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'
 
   // grid popup
   const [showAll, setShowAll]     = useState(false)
@@ -164,13 +171,13 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                       disabled={!isUnlocked}
                       className="relative aspect-square rounded-2xl overflow-hidden"
                     >
-                      <div className="absolute inset-0" style={{ backgroundColor: isUnlocked ? '#5454E9' : '#F3F4F6' }} />
+                      <div className="absolute inset-0" style={{ backgroundColor: isUnlocked ? cardBg : lockedBg }} />
                       {/* Full-card number watermark */}
                       <span
                         className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 font-bold leading-none select-none"
                         style={{
                           fontSize: '160px',
-                          color: isUnlocked ? '#4747DD' : 'rgba(0,0,0,0.07)',
+                          color: isUnlocked ? cardNumCol : lockedNumCol,
                         }}
                       >
                         {i + 1}
@@ -206,13 +213,13 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                       className="relative col-span-3 rounded-2xl overflow-hidden"
                       style={{ aspectRatio: '3/1' }}
                     >
-                      <div className="absolute inset-0" style={{ backgroundColor: isUnlocked ? '#5454E9' : '#F3F4F6' }} />
+                      <div className="absolute inset-0" style={{ backgroundColor: isUnlocked ? cardBg : lockedBg }} />
                       {/* Number 7 — left, close to bottom */}
                       <span
                         className="absolute bottom-[-18px] left-2 font-bold leading-none select-none"
                         style={{
                           fontSize: '160px',
-                          color: isUnlocked ? '#4747DD' : 'rgba(0,0,0,0.07)',
+                          color: isUnlocked ? cardNumCol : lockedNumCol,
                         }}
                       >
                         7
