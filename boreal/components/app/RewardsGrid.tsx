@@ -97,7 +97,12 @@ export function RewardsGrid({ rewards, userPoints }: Props) {
                 onClick={() => open(r)}
                 className="flex-shrink-0 w-[120px] text-left"
               >
-                <RewardCard name={r.name} cost={r.cost} imageSrc={r.imageSrc} />
+                <RewardCard
+                  name={r.name}
+                  cost={r.cost}
+                  imageSrc={r.imageSrc}
+                  imageClassName={r.imageSrc.includes('NoteBookRed') ? 'p-3' : undefined}
+                />
               </button>
             ))}
           </div>
