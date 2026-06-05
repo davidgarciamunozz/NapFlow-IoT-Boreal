@@ -129,7 +129,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                 <Image src={r.imageSrc} alt={r.name} fill className="object-cover" />
               </div>
               <div className="absolute -top-2 -right-2 z-10">
-                <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={28} height={28} />
+                <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={56} height={56} className="w-7 h-7" />
               </div>
             </button>
           ))}
