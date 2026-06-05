@@ -140,7 +140,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
                     <Image src={r.imageSrc} alt={r.name} fill className="object-contain drop-shadow" />
                   </div>
                 </div>
-                <div className="absolute -top-2 -right-2 z-10">
+                <div className="absolute -top-1 -right-1 z-10">
                   <Image src="/assets/images/starsBehaviorStrip.png" alt="" width={56} height={56} className="w-7 h-7" />
                 </div>
               </button>
