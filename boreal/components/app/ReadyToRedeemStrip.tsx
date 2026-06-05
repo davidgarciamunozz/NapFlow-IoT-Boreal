@@ -109,7 +109,7 @@ export function ReadyToRedeemStrip({ userPoints }: Props) {
         <div className="absolute inset-0 pointer-events-none select-none">
           <Image src="/assets/images/circleStar.png" alt="" width={52} height={52} className="absolute top-2 left-2 opacity-30 brightness-50" />
           <Image src="/assets/images/circleStar.png" alt="" width={48} height={48} className="absolute top-2 right-2 opacity-30 brightness-50" />
-          <Image src="/assets/images/circleStar.png" alt="" width={56} height={56} className="absolute bottom-2 left-8 opacity-30 brightness-50" />
+          <Image src="/assets/images/circleStar.png" alt="" width={56} height={56} className="absolute bottom-2 left-16 opacity-30 brightness-50" />
           <Image src="/assets/images/circleStar.png" alt="" width={52} height={52} className="absolute bottom-2 right-2 opacity-30 brightness-50" />
         </div>
         <Image src="/assets/images/StarsKiosk.png" alt="" width={80} height={56} priority className="relative z-10" />
