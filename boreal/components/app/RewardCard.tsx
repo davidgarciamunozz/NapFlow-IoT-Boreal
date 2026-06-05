@@ -8,7 +8,7 @@ interface Props {
 
 export function RewardCard({ name, cost, imageSrc }: Props) {
   return (
-    <div className="bg-white border border-gray-100 rounded-[15px] p-2 flex flex-col gap-1.5 shadow-sm">
+    <div className="bg-white border border-gray-100 rounded-[15px] p-2 shadow-sm">
       <div className="relative">
         <div className="relative w-full aspect-square rounded-[10px] overflow-hidden">
           <Image src="/assets/images/logoIcesiGray.png" alt="" fill className="object-contain p-2" />
@@ -19,7 +19,7 @@ export function RewardCard({ name, cost, imageSrc }: Props) {
           {cost.toLocaleString()}
         </div>
       </div>
-      <span className="text-[10px] font-medium text-text-primary px-0.5 leading-tight">{name}</span>
     </div>
+    <span className="text-[10px] font-medium text-text-primary leading-tight mt-1.5 block px-0.5">{name}</span>
   )
 }
