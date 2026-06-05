@@ -39,31 +39,33 @@ export default async function HomePage() {
         priority
       />
 
-      <div className="relative flex flex-col flex-1 justify-between pb-[100px]">
+      <div className="relative flex flex-col flex-1 gap-10 pb-[100px]">
         {/* Group 1: greeting + points card */}
         <div>
-          <div className="flex items-start justify-between px-5 pt-14 pb-5">
-            <h1 className="text-[35px] font-bold leading-tight bg-gradient-to-br from-primary to-active bg-clip-text text-transparent">
-              Hello {profile?.name?.split(' ')[0] ?? 'there'}!
-            </h1>
-            <button className="relative mt-2 p-1">
+          <div className="flex justify-end px-5 pt-10">
+            <button className="relative p-1">
               <Bell size={22} className="text-text-primary" />
               <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full" />
             </button>
+          </div>
+          <div className="px-5 pt-3 pb-5">
+            <h1 className="text-[35px] font-bold leading-tight bg-gradient-to-br from-primary to-active bg-clip-text text-transparent">
+              Hello {profile?.name?.split(' ')[0] ?? 'there'}!
+            </h1>
           </div>
           {profile && <PointsCard profile={profile} />}
         </div>
 
         {/* Group 2: QR code button */}
-        <div className="mx-5">
+        <div className="flex justify-center mx-5">
           <Link
             href="/app/qr"
-            className="flex items-center justify-between bg-active text-white rounded-[9px] px-5 py-4 font-bold text-[17px] hover:opacity-95 transition"
+            className="inline-flex items-center gap-4 bg-active text-white rounded-[9px] px-8 py-4 font-bold text-[17px] hover:opacity-95 transition"
           >
             <span>
               {activeSession ? 'Active session — tap to view' : 'Generate QR code'}
             </span>
-            <QrCode size={28} strokeWidth={2} />
+            <QrCode size={24} strokeWidth={2} />
           </Link>
         </div>
 

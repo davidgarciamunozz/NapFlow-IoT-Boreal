@@ -24,11 +24,12 @@ export function PointsCard({ profile }: { profile: Profile }) {
 
       <div className="bg-white rounded-[13px] px-4 pt-6 pb-4">
         <div className="relative h-[50px]">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-decoration" />
-          <div
-            className="absolute top-0 left-0 h-[2px] bg-active transition-all duration-500"
-            style={{ width: `${Math.min((profile.points / 2000) * 100, 100)}%` }}
-          />
+          <div className="absolute top-0 left-[14px] right-[28px] h-[2px] bg-decoration">
+            <div
+              className="absolute inset-y-0 left-0 bg-active transition-all duration-500"
+              style={{ width: `${Math.min((profile.points / 2000) * 100, 100)}%` }}
+            />
+          </div>
           {MILESTONES.map((m, i) => {
             const reached = profile.points >= m.pts
             const pos = i === 0 ? 'left-0' : i === 1 ? 'left-1/2 -translate-x-1/2' : 'right-0'

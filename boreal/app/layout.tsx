@@ -22,8 +22,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${jakarta.variable} font-sans antialiased`}>
+    <html lang="en" className={jakarta.variable}>
+      <body className="font-sans antialiased">
         <AccessibilityProvider>
           {children}
         </AccessibilityProvider>
