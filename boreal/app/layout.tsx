@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
+import { AccessibilityProvider } from '@/contexts/AccessibilityContext'
 import './globals.css'
 
 const jakarta = Plus_Jakarta_Sans({
@@ -22,7 +23,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${jakarta.variable} font-sans antialiased`}>{children}</body>
+      <body className={`${jakarta.variable} font-sans antialiased`}>
+        <AccessibilityProvider>
+          {children}
+        </AccessibilityProvider>
+      </body>
     </html>
   )
 }

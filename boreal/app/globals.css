@@ -10,3 +10,80 @@
   --color-text-primary: #252525;
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
+
+/* ── Accessibility: Dark Mode ─────────────────────────────── */
+html.dark {
+  --color-text-primary: #e8e8f0;
+  --color-decoration: #2d2d3d;
+  --color-primary: #a87aff;
+  --color-active: #7575ff;
+  --color-watermark: #a87aff;
+}
+
+html.dark body {
+  background-color: #1a1a2e;
+  color: #e8e8f0;
+}
+
+html.dark .bg-white {
+  background-color: #252535 !important;
+}
+
+html.dark .border-gray-100,
+html.dark .divide-gray-100 > * + * {
+  border-color: #3a3a4a !important;
+}
+
+html.dark .text-gray-400 {
+  color: #8888a0 !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: #2d2d3d !important;
+}
+
+html.dark .text-gray-500 {
+  color: #9999b0 !important;
+}
+
+html.dark .bg-decoration {
+  background-color: #2d2d3d !important;
+}
+
+html.dark nav.bg-white {
+  background-color: #252535 !important;
+  border-color: #3a3a4a !important;
+}
+
+/* ── Accessibility: Font Size ─────────────────────────────── */
+html[data-font="1"] {
+  font-size: 18px;
+}
+
+html[data-font="2"] {
+  font-size: 21px;
+}
+
+/* ── Accessibility: High Contrast ────────────────────────── */
+html.high-contrast {
+  --color-text-primary: #000000;
+  --color-primary: #3a00b3;
+  --color-active: #0000b3;
+  --color-decoration: #c0c0c0;
+}
+
+html.high-contrast .text-gray-400,
+html.high-contrast .text-gray-500 {
+  color: #444444 !important;
+}
+
+html.high-contrast.dark {
+  --color-text-primary: #ffffff;
+  --color-primary: #cc99ff;
+  --color-active: #9999ff;
+}
+
+html.high-contrast.dark .text-gray-400,
+html.high-contrast.dark .text-gray-500 {
+  color: #bbbbcc !important;
+}

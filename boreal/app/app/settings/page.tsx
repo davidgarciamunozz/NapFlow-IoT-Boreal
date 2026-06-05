@@ -3,6 +3,7 @@ import { createServiceClient } from '@/lib/supabase/service'
 import { redirect } from 'next/navigation'
 import { Star } from 'lucide-react'
 import { LogoutButton } from '@/components/app/LogoutButton'
+import { AccessibilitySettings } from '@/components/app/AccessibilitySettings'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
@@ -42,6 +43,8 @@ export default async function SettingsPage() {
           </div>
         </div>
       </div>
+
+      <AccessibilitySettings />
 
       <LogoutButton />
     </div>
